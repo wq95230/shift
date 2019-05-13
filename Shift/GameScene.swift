@@ -62,6 +62,13 @@ class GameScene: SKScene {
     }
     
     // Restart game
+    func restart() {
+        game!.restart()
+        for (i, position) in game!.boardState().positions.enumerated() {
+            let ball = self.childNode(withName: "ball" + String(i))
+            ball!.position = CGPoint(x: CGFloat(position.c) * squareSize!.width + xOffset!, y: -(CGFloat(position.r) * squareSize!.height + yOffset!))
+        }
+    }
     
     // Recognize and respond to swipe gestures
     @objc func handleGesture(gesture: UISwipeGestureRecognizer) -> Void {
@@ -175,9 +182,9 @@ class GameScene: SKScene {
         }
         
         // Draw game pieces
-        for position in boardState.positions {
+        for (i, position) in boardState.positions.enumerated() {
             let piece = SKSpriteNode(imageNamed: "ball")
-            piece.name = "ball"
+            piece.name = "ball" + String(i)
             piece.size = squareSize!
             piece.position = CGPoint(x: CGFloat(position.c) * squareSize!.width + xOffset!, y: -(CGFloat(position.r) * squareSize!.height + yOffset!))
             piece.zPosition = 1
